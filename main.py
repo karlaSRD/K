@@ -1,22 +1,43 @@
 # -*- coding: utf-8 -*-
+pandas
+openpyxl
+import pandas as pd
 from flask import Flask
 
 app=Flask(__name__)
 
-@app.route("/sumar/<int:num1>/<int:num2>")
-def sumar(num1, num2):
-    resultado = num1 + num2
-    return f"Resultado de la suma: {resultado} "
-  
-  @app.route("/restar/<int:num1>/<int:num2>")
-def restar(num1, num2):
-    resultado = num1 - num2
-    return f"Resultado de la resta: {resultado}"
+base=pd.read_excel("Coreanos.xlsx")
 
-@app.route("/dividir/<int:num1>/<int:num2>")
-def dividir(num1, num2):
-resultado = num1 / num2
-return f"Resultado de la división: {resultado}"
+@app.router("/")
+def Principal():
+  return "Esta es una API sobre actores, actrices y cantantes coreanos"
 
-if __name__=="__main__":
+@app.router("Por_Edad/<Edad>")
+def  PorEdad(Edad):
+  Edad=int(Edad)
+  fila=base[base["Edad"]==Edad]
+  respuesta=f"Los corean@s de {Edad} años son  {fila.loc[:,'Edad']}"
+  return respuesta
+
+@app.router("/Por_Genero/<Genero>")
+  def PorGenero(Genero):
+    resultados=base[base["Genero"]==Genero]
+    resultados=str (resultados)
+    return resultados
+
+@app.router("/Por_Profesion/<Profesion>")
+  def PorProfesion(Profesion):
+    resultados=base[base["Profesion"]==Profesion]
+    resultados=str (resultados)
+    return resultados
+
+@app.router("/Por_Rango_Edad/<Edad1>/<Edad2>")
+def  PorRangoEdad(Edad1,Edad2):
+    Edad1=int(Edad1)
+    Edad2=int(Edad2)
+    Actores_por_rango=base[(base["Edad"]>Edad1) & (base["Edad"]<Edad2)]
+    resultados=f"Los actores con edades entre {Edad1} y {Edad2} años son: {fila.loc [:,'Actores_por_rango']}"
+    return resultados
+
+if__name__=="__maim__":
   app.run()
