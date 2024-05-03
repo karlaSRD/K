@@ -39,5 +39,5 @@ def  PorRangoEdad(Edad1,Edad2):
     resultados=f"Los actores con edades entre {Edad1} y {Edad2} años son: {fila.loc [:,'Actores_por_rango']}"
     return resultados
 
-if__name__=="__maim__":
+if__name__=="__main__":
   app.run()
